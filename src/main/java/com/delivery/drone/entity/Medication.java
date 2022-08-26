@@ -3,8 +3,6 @@ package com.delivery.drone.entity;
 import lombok.Data;
 
 import javax.persistence.*;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.Pattern;
 
 /**
  * created by Diluni
@@ -17,13 +15,10 @@ public class Medication extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long medId;
 
-    @Pattern(regexp = "[A-Za-z0-9--_]", message = "Invalid medication name!")
     private String name;
 
-    @Min(value = 0, message = "Invalid Weight!")
     private Double weight = 0.0;
 
-    //    need regex
     private String code;
 
     private String imagePath;
@@ -33,7 +28,6 @@ public class Medication extends BaseEntity {
     private Drone drone;
 
     public Medication() {
-
     }
 
     public Medication(String name, Double weight, String code, String imagePath, Drone drone) {

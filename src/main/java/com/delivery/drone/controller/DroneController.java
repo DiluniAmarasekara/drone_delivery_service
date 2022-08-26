@@ -1,12 +1,15 @@
 package com.delivery.drone.controller;
 
 import com.delivery.drone.dto.CreateDroneDto;
+import com.delivery.drone.dto.DroneDto;
 import com.delivery.drone.dto.MedicationDto;
-import com.delivery.drone.dto.ResponseDto;
 import com.delivery.drone.service.DroneService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,15 +27,16 @@ public class DroneController {
     private DroneService droneService;
 
     /**
-     * REST endpoint of registering a drone
+     * REST POST endpoint of registering a drone
      *
      * @param createDroneDto
-     * @return ResponseDto
+     * @return ResponseEntity
      */
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public ResponseDto add(@RequestBody(required = true) CreateDroneDto createDroneDto) {
+    public ResponseEntity<String> add(@Validated @RequestBody(required = true) CreateDroneDto createDroneDto) {
         logger.info("Enter the drone add POST REST API");
-        return droneService.add(createDroneDto);
+        Boolean isSuccess = droneService.add(createDroneDto);
+        return isSuccess ? new ResponseEntity<>("Drone has been registered successfully!", HttpStatus.CREATED) : new ResponseEntity<>("Drone registration is failed!", HttpStatus.EXPECTATION_FAILED);
     }
 
     /**
@@ -40,21 +44,22 @@ public class DroneController {
      *
      * @param serialNo
      * @param medicationDtos
-     * @return ResponseDto
+     * @return ResponseEntity
      */
     @RequestMapping(value = "/load", method = RequestMethod.POST)
-    public ResponseDto load(@RequestParam(required = true) String serialNo, @RequestBody(required = true) List<MedicationDto> medicationDtos) {
+    public ResponseEntity<String> load(@Validated @RequestBody(required = true) List<MedicationDto> medicationDtos, @RequestParam(required = true) String serialNo) {
         logger.info("Enter the drone load POST REST API");
-        return droneService.load(serialNo, medicationDtos);
+        Boolean isSuccess = droneService.load(serialNo, medicationDtos);
+        return isSuccess ? new ResponseEntity<>("Drone loading is successful!", HttpStatus.CREATED) : new ResponseEntity<>("Drone loading is failed!", HttpStatus.EXPECTATION_FAILED);
     }
 
     /**
      * REST GET endpoint of checking available drones for loading
      *
-     * @return List<CreateDroneDto>
+     * @return List<DroneDto>
      */
     @RequestMapping(value = "/getAll", method = RequestMethod.GET)
-    public List<CreateDroneDto> getAll() {
+    public List<DroneDto> getAll() {
         logger.info("Enter the drone get all GET REST API");
         return droneService.getAll();
     }

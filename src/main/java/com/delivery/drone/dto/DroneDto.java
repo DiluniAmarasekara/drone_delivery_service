@@ -32,4 +32,14 @@ public class DroneDto {
         this.serialNo = serialNo;
         this.batteryCapacity = batteryCapacity;
     }
+
+    public DroneDto(String serialNo, EnumUtil.Model model, Double weight, Integer batteryCapacity, EnumUtil.State state, Long fleetId) {
+        this.serialNo = serialNo;
+        this.model = model;
+        this.weight = weight;
+        this.batteryCapacity = batteryCapacity;
+        this.state = state;
+        this.fleetId = fleetId;
+    }
+
 }

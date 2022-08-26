@@ -15,9 +15,7 @@ public class CreateDroneDto {
     @Size(max = 100, message = "Serial Number should be max 100 characters!")
     private String serialNo;
 
-    @ValidateEnum(
-            enumClazz = EnumUtil.Model.class,
-            message = "DDDDDDDDDDDDDDDThis error is coming from the enum class")
+    @ValidateEnum(enumClazz = EnumUtil.Model.class, message = "Model should be one from LW, MW, CW, HW!")
     private String model;
 
     @DecimalMax(value = "500.0", message = "Weight should be no more than 500g!")

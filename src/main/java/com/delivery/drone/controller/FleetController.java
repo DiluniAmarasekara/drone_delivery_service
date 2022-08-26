@@ -1,6 +1,5 @@
 package com.delivery.drone.controller;
 
-import com.delivery.drone.dto.ResponseDto;
 import com.delivery.drone.entity.Fleet;
 import com.delivery.drone.service.FleetService;
 import org.slf4j.Logger;
@@ -34,8 +33,8 @@ public class FleetController {
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public ResponseEntity<String> add(@RequestParam(required = true) String fleetName) {
         logger.info("Enter the fleet add POST REST API");
-        Boolean isCreated = fleetService.add(fleetName);
-        return isCreated ? new ResponseEntity<>("Fleet has been registered successfully!", HttpStatus.CREATED) : new ResponseEntity<>("Fleet registration is failed!", HttpStatus.EXPECTATION_FAILED);
+        Boolean isSuccess = fleetService.add(fleetName);
+        return isSuccess ? new ResponseEntity<>("Fleet has been registered successfully!", HttpStatus.CREATED) : new ResponseEntity<>("Fleet registration is failed!", HttpStatus.EXPECTATION_FAILED);
     }
 
     /**

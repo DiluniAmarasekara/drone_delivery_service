@@ -20,9 +20,14 @@ public class Fleet extends BaseEntity {
 
     private String fleetName;
 
-    private Integer noOfDrones = 0;
+    private Integer noOfDrones;
 
     public Fleet() {
+    }
+
+    public Fleet(String fleetName, Integer noOfDrones) {
+        this.fleetName = fleetName;
+        this.noOfDrones = noOfDrones;
     }
 
     public Fleet(Long fleetId, String fleetName, Integer noOfDrones) {

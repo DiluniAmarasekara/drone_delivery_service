@@ -1,8 +1,8 @@
 package com.delivery.drone.service.impl;
 
 import com.delivery.drone.dto.CreateDroneDto;
+import com.delivery.drone.dto.DroneDto;
 import com.delivery.drone.dto.MedicationDto;
-import com.delivery.drone.dto.ResponseDto;
 import com.delivery.drone.entity.Drone;
 import com.delivery.drone.entity.Fleet;
 import com.delivery.drone.entity.Medication;
@@ -10,10 +10,10 @@ import com.delivery.drone.repository.DroneRepository;
 import com.delivery.drone.repository.FleetRepository;
 import com.delivery.drone.repository.MedicationRepository;
 import com.delivery.drone.service.DroneService;
+import com.delivery.drone.util.EnumUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,26 +42,26 @@ public class DroneServiceImpl implements DroneService {
      * Implementation of registering a drone
      *
      * @param droneDto
-     * @return ResponseDto
+     * @return Boolean
      */
     @Transactional
     @Override
-    public ResponseDto add(CreateDroneDto droneDto) {
+    public Boolean add(CreateDroneDto droneDto) {
         Optional<Fleet> fleet = fleetRepository.findById(droneDto.getFleetId());
         if (fleet.isPresent() && fleet.get().getNoOfDrones() < 10) {
             try {
-                Drone drone = new Drone(droneDto.getSerialNo(), droneDto.getModel(), droneDto.getAvailableWeight(),
-                        droneDto.getAvailableWeight(), droneDto.getBatteryCapacity(), fleet.get());
+                Drone drone = new Drone(droneDto.getSerialNo(), EnumUtil.Model.valueOf(droneDto.getModel()), Double.parseDouble(String.valueOf(droneDto.getAvailableWeight())),
+                        Double.parseDouble(String.valueOf(droneDto.getAvailableWeight())), droneDto.getBatteryCapacity(), fleet.get());
                 droneRepository.save(drone);
                 fleet.get().setNoOfDrones(fleet.get().getNoOfDrones() + 1);
-                fleetRepository.saveAndFlush(fleet.get());
+                fleetRepository.save(fleet.get());
             } catch (Exception e) {
                 logger.error(e.getMessage());
                 throw new RuntimeException("Exception is occurred while registering the drone");
             }
-            return new ResponseDto(HttpStatus.CREATED, "Drone has been registered successfully!");
+            return Boolean.TRUE;
         }
-        return new ResponseDto(HttpStatus.BAD_REQUEST, "Invalid Fleet Id or fleet is already filled with 10 drones! Drone registration is failed!");
+        return Boolean.FALSE;
     }
 
     /**
@@ -73,7 +73,7 @@ public class DroneServiceImpl implements DroneService {
      */
     @Transactional
     @Override
-    public ResponseDto load(String serialNo, List<MedicationDto> medicationDtos) {
+    public Boolean load(String serialNo, List<MedicationDto> medicationDtos) {
         Optional<Drone> drone = droneRepository.findBySerialNo(serialNo);
         if (drone.isPresent() && drone.get().getBatteryCapacity() >= 25 && drone.get().getAvailableWeight() > 0) {
             Double medsWeight = medicationDtos.stream().mapToDouble(MedicationDto::getWeight).sum();
@@ -82,18 +82,18 @@ public class DroneServiceImpl implements DroneService {
                     List<Medication> medicationList = medicationDtos.stream()
                             .map(medicationDto -> new Medication(medicationDto.getName(), medicationDto.getWeight(), medicationDto.getCode(),
                                     medicationDto.getImagePath(), drone.get())).collect(Collectors.toList());
-                    medicationRepository.saveAllAndFlush(medicationList);
+                    medicationRepository.saveAll(medicationList);
                     drone.get().setAvailableWeight(drone.get().getAvailableWeight() - medsWeight);
-                    droneRepository.saveAndFlush(drone.get());
+                    droneRepository.save(drone.get());
                 } catch (Exception e) {
                     logger.error(e.getMessage());
                     throw new RuntimeException("Exception is occurred while loading the drone");
                 }
-                return new ResponseDto(HttpStatus.CREATED, "Drone has been loaded successfully!");
+                return Boolean.TRUE;
             }
-            return new ResponseDto(HttpStatus.NOT_ACCEPTABLE, "Drone loading is failed! Drone does not have enough space for entered medications weight!");
+            return Boolean.FALSE;
         }
-        return new ResponseDto(HttpStatus.BAD_REQUEST, "Drone loading is failed! Make sure whether Drone Serial Number is correct, Drone battery capacity is not less than 25% and Drone already is not fully loaded!");
+        return Boolean.FALSE;
     }
 
     /**
@@ -102,8 +102,8 @@ public class DroneServiceImpl implements DroneService {
      * @return List<CreateDroneDto>
      */
     @Override
-    public List<CreateDroneDto> getAll() {
-        List<CreateDroneDto> droneDtos;
+    public List<DroneDto> getAll() {
+        List<DroneDto> droneDtos;
         try {
             droneDtos = droneRepository.findAllAvailableDroneDtos();
         } catch (Exception e) {

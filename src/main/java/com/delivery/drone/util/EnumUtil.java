@@ -6,7 +6,16 @@ package com.delivery.drone.util;
  */
 public class EnumUtil {
     public enum Model {
-        Lightweight, Middleweight, Cruiserweight, Heavyweight
+        LW("Lightweight"),
+        MW("Middleweight"),
+        CW("Cruiserweight"),
+        HW("Heavyweight");
+
+        String value;
+
+        Model(String value) {
+            this.value = value;
+        }
     }
 
     public enum State {

@@ -4,9 +4,7 @@ import com.delivery.drone.util.EnumUtil;
 import lombok.Data;
 
 import javax.persistence.*;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.Size;
+
 
 /**
  * created by Diluni
@@ -16,20 +14,15 @@ import javax.validation.constraints.Size;
 @Data
 public class Drone extends BaseEntity {
     @Id
-    @Size(max = 100, message = "Serial Number should be max 100 characters!")
     private String serialNo;
 
     @Enumerated(EnumType.ORDINAL)
     private EnumUtil.Model model;
 
-    @Max(value = 500, message = "Invalid data! Weight should be no more than 500g!")
-    @Min(value = 0, message = "Invalid data! Weight should be a positive value!")
     private Double weightLimit;
 
     private Double availableWeight;
 
-    @Max(value = 100, message = "Invalid Battery Capacity!")
-    @Min(value = 0, message = "Invalid Battery Capacity!")
     private Integer batteryCapacity;
 
     @Enumerated(EnumType.ORDINAL)

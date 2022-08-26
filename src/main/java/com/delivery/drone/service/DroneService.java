@@ -1,8 +1,8 @@
 package com.delivery.drone.service;
 
 import com.delivery.drone.dto.CreateDroneDto;
+import com.delivery.drone.dto.DroneDto;
 import com.delivery.drone.dto.MedicationDto;
-import com.delivery.drone.dto.ResponseDto;
 
 import java.util.List;
 
@@ -11,11 +11,11 @@ import java.util.List;
  * on 8/26/2022
  */
 public interface DroneService {
-    ResponseDto add(CreateDroneDto createDroneDto);
+    Boolean add(CreateDroneDto createDroneDto);
 
-    ResponseDto load(String serialNo, List<MedicationDto> medicationDtos);
+    Boolean load(String serialNo, List<MedicationDto> medicationDtos);
 
-    List<CreateDroneDto> getAll();
+    List<DroneDto> getAll();
 
     String getBatteryLevel(String serialNo);
 

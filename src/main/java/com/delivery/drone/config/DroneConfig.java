@@ -49,7 +49,7 @@ public class DroneConfig {
             try {
                 List<BatteryHistory> batteryHistories = drones.stream()
                         .map(drone -> new BatteryHistory(drone.getBatteryCapacity(), drone)).collect(Collectors.toList());
-                batteryHistoryRepository.saveAllAndFlush(batteryHistories);
+                batteryHistoryRepository.saveAll(batteryHistories);
             } catch (Exception e) {
                 logger.info("Encountered with an exception at " + new Date() + " " + e.getMessage());
                 throw new RuntimeException("Exception is occurred while running the Battery Audit scheduler");
@@ -71,7 +71,7 @@ public class DroneConfig {
         if (drones != null) {
             try {
                 drones.forEach(drone -> drone.setBatteryCapacity(drone.getBatteryCapacity() - 1));
-                droneRepository.saveAllAndFlush(drones);
+                droneRepository.saveAll(drones);
             } catch (Exception e) {
                 logger.info("Encountered with an exception at " + new Date() + " " + e.getMessage());
                 throw new RuntimeException("Exception is occurred while running the Battery Percentage Update scheduler");
@@ -94,7 +94,7 @@ public class DroneConfig {
         if (drones != null) {
             try {
                 drones.forEach(drone -> drone.setState(stateContinuation.get(drone.getState())));
-                droneRepository.saveAllAndFlush(drones);
+                droneRepository.saveAll(drones);
             } catch (Exception e) {
                 logger.info("Encountered with an exception at " + new Date() + " " + e.getMessage());
                 throw new RuntimeException("Exception is occurred while running the Not Available Drones State Update scheduler");
