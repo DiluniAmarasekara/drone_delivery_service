@@ -29,10 +29,10 @@ public class DroneController {
      * @param createDroneDto
      * @return ResponseDto
      */
-    @RequestMapping(value = "/registerDrone", method = RequestMethod.POST)
-    public ResponseDto registerDrone(@RequestBody(required = true) CreateDroneDto createDroneDto) {
-        logger.info("Enter the register drone POST REST API");
-        return droneService.registerDrone(createDroneDto);
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    public ResponseDto add(@RequestBody(required = true) CreateDroneDto createDroneDto) {
+        logger.info("Enter the drone add POST REST API");
+        return droneService.add(createDroneDto);
     }
 
     /**
@@ -42,22 +42,10 @@ public class DroneController {
      * @param medicationDtos
      * @return ResponseDto
      */
-    @RequestMapping(value = "/loadDrone", method = RequestMethod.POST)
-    public ResponseDto loadDrone(@RequestParam(required = true) String serialNo, @RequestBody(required = true) List<MedicationDto> medicationDtos) {
-        logger.info("Enter the load the drone POST REST API");
-        return droneService.loadDrone(serialNo, medicationDtos);
-    }
-
-    /**
-     * REST GET endpoint of checking loaded medication items for a given drone
-     *
-     * @param serialNo
-     * @return List<MedicationDto>
-     */
-    @RequestMapping(value = "/getDrone", method = RequestMethod.GET)
-    public List<MedicationDto> getDrone(@RequestParam(required = true) String serialNo) {
-        logger.info("Enter the get drone GET REST API");
-        return droneService.getDrone(serialNo);
+    @RequestMapping(value = "/load", method = RequestMethod.POST)
+    public ResponseDto load(@RequestParam(required = true) String serialNo, @RequestBody(required = true) List<MedicationDto> medicationDtos) {
+        logger.info("Enter the drone load POST REST API");
+        return droneService.load(serialNo, medicationDtos);
     }
 
     /**
@@ -65,10 +53,10 @@ public class DroneController {
      *
      * @return List<CreateDroneDto>
      */
-    @RequestMapping(value = "/getAvailableDrones", method = RequestMethod.GET)
-    public List<CreateDroneDto> getAvailableDrones() {
-        logger.info("Enter the get available drones GET REST API");
-        return droneService.getAvailableDrones();
+    @RequestMapping(value = "/getAll", method = RequestMethod.GET)
+    public List<CreateDroneDto> getAll() {
+        logger.info("Enter the drone get all GET REST API");
+        return droneService.getAll();
     }
 
     /**
@@ -77,10 +65,10 @@ public class DroneController {
      * @param serialNo
      * @return String
      */
-    @RequestMapping(value = "/getBatteryLevelOfDrone", method = RequestMethod.GET)
-    public String getBatteryLevelOfDrone(@RequestParam(required = true) String serialNo) {
-        logger.info("Enter the get battery level of drone GET REST API");
-        return droneService.getBatteryLevelOfDrone(serialNo);
+    @RequestMapping(value = "/get/batteryLevel", method = RequestMethod.GET)
+    public String getBatteryLevel(@RequestParam(required = true) String serialNo) {
+        logger.info("Enter the drone get battery level GET REST API");
+        return droneService.getBatteryLevel(serialNo);
     }
 
 }

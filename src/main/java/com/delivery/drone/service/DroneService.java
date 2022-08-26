@@ -11,14 +11,12 @@ import java.util.List;
  * on 8/26/2022
  */
 public interface DroneService {
-    ResponseDto registerDrone(CreateDroneDto droneDto);
+    ResponseDto add(CreateDroneDto createDroneDto);
 
-    List<MedicationDto> getDrone(String serialNo);
+    ResponseDto load(String serialNo, List<MedicationDto> medicationDtos);
 
-    ResponseDto loadDrone(String serialNo, List<MedicationDto> medicationDtos);
+    List<CreateDroneDto> getAll();
 
-    List<CreateDroneDto> getAvailableDrones();
-
-    String getBatteryLevelOfDrone(String serialNo);
+    String getBatteryLevel(String serialNo);
 
 }
