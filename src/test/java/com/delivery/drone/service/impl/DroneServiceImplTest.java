@@ -56,8 +56,6 @@ class DroneServiceImplTest {
         when(droneRepository.findBySerialNo("DC-13245")).thenReturn(drone1);
         when(droneRepository.findBySerialNo("DC-13246")).thenReturn(drone2);
         when(droneRepository.findBySerialNo("DC-13247")).thenReturn(drone3);
-
-        when(medicationRepository.saveAllAndFlush(any())).thenReturn(new ArrayList<>());
     }
 
     /**
