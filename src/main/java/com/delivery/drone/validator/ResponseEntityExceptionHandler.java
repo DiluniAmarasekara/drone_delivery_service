@@ -62,5 +62,4 @@ public class ResponseEntityExceptionHandler extends org.springframework.web.serv
         ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), error);
         return new ResponseEntity<Object>(apiError, new HttpHeaders(), apiError.getStatus());
     }
-
 }

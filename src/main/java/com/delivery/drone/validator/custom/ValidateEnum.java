@@ -31,5 +31,4 @@ public @interface ValidateEnum {
     Class<?>[] groups() default {};
 
     Class<? extends Payload>[] payload() default {};
-
 }
