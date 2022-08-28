@@ -47,4 +47,5 @@ public class FleetController {
         logger.info("Enter the fleet get all GET REST API");
         return fleetService.getAll();
     }
+
 }

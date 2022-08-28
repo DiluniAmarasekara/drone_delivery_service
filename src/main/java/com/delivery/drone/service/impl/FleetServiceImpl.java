@@ -62,4 +62,5 @@ public class FleetServiceImpl implements FleetService {
         logger.info("Exit the get all fleets service implementation");
         return fleetDtos;
     }
+
 }

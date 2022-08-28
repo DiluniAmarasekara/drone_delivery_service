@@ -19,4 +19,5 @@ public interface DroneService {
     List<DroneDto> getAll();
 
     Map<Boolean, String> getBatteryLevel(String serialNo);
+
 }

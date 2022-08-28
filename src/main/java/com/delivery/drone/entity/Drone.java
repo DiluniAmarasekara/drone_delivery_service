@@ -57,4 +57,5 @@ public class Drone extends BaseEntity {
             this.state = EnumUtil.State.LOADED;
         }
     }
+
 }

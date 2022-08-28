@@ -12,4 +12,5 @@ public interface FleetService {
     Boolean add(String fleetName);
 
     List<FleetDto> getAll();
+
 }

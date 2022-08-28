@@ -23,4 +23,5 @@ public class ValidList<E> implements List<E> {
     public ValidList(List<E> list) {
         this.list = list;
     }
+
 }

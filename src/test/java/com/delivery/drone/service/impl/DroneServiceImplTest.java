@@ -263,4 +263,5 @@ class DroneServiceImplTest {
         assertEquals(expectedResult.size(), actualResult.size());
         assertEquals(expectedResult.get(false), actualResult.get(false));
     }
+
 }

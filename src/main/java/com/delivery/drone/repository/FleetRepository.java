@@ -16,4 +16,5 @@ import java.util.List;
 public interface FleetRepository extends JpaRepository<Fleet, Long> {
     @Query("SELECT new com.delivery.drone.dto.FleetDto(a.fleetId, a.fleetName, a.noOfDrones) FROM Fleet a")
     List<FleetDto> findAllFleetDtos();
+
 }

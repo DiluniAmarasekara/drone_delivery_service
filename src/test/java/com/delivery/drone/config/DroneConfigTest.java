@@ -148,4 +148,5 @@ class DroneConfigTest {
         });
         assertEquals("Exception is occurred while running the Not Available Drones State Update scheduler", exception.getMessage());
     }
+
 }

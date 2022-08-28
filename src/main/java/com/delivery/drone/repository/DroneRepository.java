@@ -22,4 +22,5 @@ public interface DroneRepository extends JpaRepository<Drone, Long> {
     List<Drone> findByStateNotIn(List<EnumUtil.State> asList);
 
     Optional<Drone> findBySerialNo(String serialNo);
+
 }

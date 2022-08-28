@@ -50,4 +50,5 @@ class MedicationServiceImplTest {
         });
         assertEquals("Exception is occurred while getting loaded medications of drone", exception.getMessage());
     }
+
 }

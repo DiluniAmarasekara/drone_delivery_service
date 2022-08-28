@@ -22,4 +22,5 @@ public class FleetDto {
         this.fleetName = fleetName;
         this.noOfDrones = noOfDrones;
     }
+
 }

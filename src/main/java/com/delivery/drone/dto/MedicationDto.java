@@ -33,4 +33,5 @@ public class MedicationDto {
         this.code = code;
         this.imagePath = imagePath;
     }
+
 }
