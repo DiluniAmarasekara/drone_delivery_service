@@ -32,6 +32,7 @@ public class FleetServiceImpl implements FleetService {
     @Transactional
     @Override
     public Boolean add(String fleetName) {
+        logger.info("Enter the add fleet of drone service implementation");
         Fleet fleet = new Fleet(fleetName, 0);
         try {
             fleetRepository.save(fleet);
@@ -39,11 +40,18 @@ public class FleetServiceImpl implements FleetService {
             logger.error(e.getMessage());
             throw new RuntimeException("Exception is occurred while adding the fleet");
         }
+        logger.info("Exit the add fleet of drone service implementation");
         return Boolean.TRUE;
     }
 
+    /**
+     * Implementation of get all fleets
+     *
+     * @return List
+     */
     @Override
     public List<FleetDto> getAll() {
+        logger.info("Enter the get all fleets service implementation");
         List<FleetDto> fleetDtos;
         try {
             fleetDtos = fleetRepository.findAllFleetDtos();
@@ -51,6 +59,7 @@ public class FleetServiceImpl implements FleetService {
             logger.error(e.getMessage());
             throw new RuntimeException("Exception is occurred while getting all the fleets");
         }
+        logger.info("Exit the get all fleets service implementation");
         return fleetDtos;
     }
 }

@@ -49,6 +49,7 @@ public class DroneServiceImpl implements DroneService {
     @Transactional
     @Override
     public Map<Boolean, String> add(CreateDroneDto droneDto) {
+        logger.info("Enter the add drone service implementation");
         Optional<Fleet> fleet = fleetRepository.findById(droneDto.getFleetId());
         if (fleet.isPresent() && fleet.get().getNoOfDrones() < 10) {
             Optional<Drone> droneExist = droneRepository.findBySerialNo(droneDto.getSerialNo());
@@ -63,15 +64,18 @@ public class DroneServiceImpl implements DroneService {
                     logger.error(e.getMessage());
                     throw new RuntimeException("Exception is occurred while registering the drone");
                 }
+                logger.info("Exit the add drone service implementation");
                 return new HashMap<>() {{
                     put(true, "Drone has been registered successfully!");
                 }};
             } else {
+                logger.info("Exit the add drone service implementation");
                 return new HashMap<>() {{
                     put(false, "Drone serial number is already exist!");
                 }};
             }
         }
+        logger.info("Exit the add drone service implementation");
         return new HashMap<>() {{
             put(false, "Fleet is not exist or fleet already filled with 10 drones!");
         }};
@@ -87,6 +91,7 @@ public class DroneServiceImpl implements DroneService {
     @Transactional
     @Override
     public Map<Boolean, String> load(String serialNo, List<MedicationDto> medicationDtos) {
+        logger.info("Enter the load drone service implementation");
         Optional<Drone> drone = droneRepository.findBySerialNo(serialNo);
         if (drone.isPresent() && drone.get().getBatteryCapacity() >= 25 && drone.get().getAvailableWeight() > 0) {
             Double medsWeight = medicationDtos.stream().mapToDouble(MedicationDto::getWeight).sum();
@@ -102,15 +107,18 @@ public class DroneServiceImpl implements DroneService {
                     logger.error(e.getMessage());
                     throw new RuntimeException("Exception is occurred while loading the drone");
                 }
+                logger.info("Exit the load drone service implementation");
                 return new HashMap<>() {{
                     put(true, "Drone loading is successful!");
                 }};
             } else {
+                logger.info("Exit the load drone service implementation");
                 return new HashMap<>() {{
                     put(false, "Medications weight is greater than Drone's available weight!");
                 }};
             }
         }
+        logger.info("Exit the load drone service implementation");
         return new HashMap<>() {{
             put(false, "Drone is not exist or drone battery capacity less than 25% or drone is already loaded!");
         }};
@@ -123,6 +131,7 @@ public class DroneServiceImpl implements DroneService {
      */
     @Override
     public List<DroneDto> getAll() {
+        logger.info("Enter the get all available drones service implementation");
         List<DroneDto> droneDtos;
         try {
             droneDtos = droneRepository.findAllAvailableDroneDtos();
@@ -130,6 +139,7 @@ public class DroneServiceImpl implements DroneService {
             logger.error(e.getMessage());
             throw new RuntimeException("Exception is occurred while getting available drones for loading");
         }
+        logger.info("Exit the get all available drones service implementation");
         return droneDtos;
     }
 
@@ -141,15 +151,17 @@ public class DroneServiceImpl implements DroneService {
      */
     @Override
     public Map<Boolean, String> getBatteryLevel(String serialNo) {
+        logger.info("Enter the get battery level of drone service implementation");
         Optional<Drone> drone = droneRepository.findBySerialNo(serialNo);
         if (drone.isPresent()) {
+            logger.info("Exit the get battery level of drone service implementation");
             return new HashMap<>() {{
                 put(true, drone.get().getBatteryCapacity() + "%");
             }};
         }
+        logger.info("Exit the get battery level of drone service implementation");
         return new HashMap<>() {{
             put(false, "Invalid drone serial number!");
         }};
     }
-
 }

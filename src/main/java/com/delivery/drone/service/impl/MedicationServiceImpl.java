@@ -29,6 +29,7 @@ public class MedicationServiceImpl implements MedicationService {
      */
     @Override
     public List<MedicationDto> getAll(String serialNo) {
+        logger.info("Enter the get all loaded medication items of drone service implementation");
         List<MedicationDto> medicationDtos;
         try {
             medicationDtos = medicationRepository.findAllMedicationDtos(serialNo);
@@ -36,7 +37,7 @@ public class MedicationServiceImpl implements MedicationService {
             logger.error(e.getMessage());
             throw new RuntimeException("Exception is occurred while getting loaded medications of drone");
         }
+        logger.info("Exit the get all loaded medication items of drone service implementation");
         return medicationDtos;
     }
-
 }
