@@ -25,7 +25,7 @@ public class MedicationServiceImpl implements MedicationService {
      * Implementation of checking loaded medication items for a given drone
      *
      * @param serialNo
-     * @return List<MedicationDto>
+     * @return List
      */
     @Override
     public List<MedicationDto> getAll(String serialNo) {

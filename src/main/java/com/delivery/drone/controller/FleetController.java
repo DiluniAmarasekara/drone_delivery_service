@@ -40,7 +40,7 @@ public class FleetController {
     /**
      * REST GET endpoint of getting all the fleets
      *
-     * @return List<Fleet>
+     * @return List
      */
     @RequestMapping(value = "/getAll", method = RequestMethod.GET)
     public List<Fleet> getAll() {

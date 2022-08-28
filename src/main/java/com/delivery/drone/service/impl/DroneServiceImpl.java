@@ -17,7 +17,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -42,26 +44,37 @@ public class DroneServiceImpl implements DroneService {
      * Implementation of registering a drone
      *
      * @param droneDto
-     * @return Boolean
+     * @return Map
      */
     @Transactional
     @Override
-    public Boolean add(CreateDroneDto droneDto) {
+    public Map<Boolean, String> add(CreateDroneDto droneDto) {
         Optional<Fleet> fleet = fleetRepository.findById(droneDto.getFleetId());
         if (fleet.isPresent() && fleet.get().getNoOfDrones() < 10) {
-            try {
-                Drone drone = new Drone(droneDto.getSerialNo(), EnumUtil.Model.valueOf(droneDto.getModel().toUpperCase()), Double.parseDouble(String.valueOf(droneDto.getAvailableWeight())),
-                        Double.parseDouble(String.valueOf(droneDto.getAvailableWeight())), droneDto.getBatteryCapacity(), fleet.get());
-                droneRepository.save(drone);
-                fleet.get().setNoOfDrones(fleet.get().getNoOfDrones() + 1);
-                fleetRepository.save(fleet.get());
-            } catch (Exception e) {
-                logger.error(e.getMessage());
-                throw new RuntimeException("Exception is occurred while registering the drone");
+            Optional<Drone> droneExist = droneRepository.findBySerialNo(droneDto.getSerialNo());
+            if (!droneExist.isPresent()) {
+                try {
+                    Drone drone = new Drone(droneDto.getSerialNo(), EnumUtil.Model.valueOf(droneDto.getModel().toUpperCase()), Double.parseDouble(String.valueOf(droneDto.getAvailableWeight())),
+                            Double.parseDouble(String.valueOf(droneDto.getAvailableWeight())), droneDto.getBatteryCapacity(), fleet.get());
+                    droneRepository.save(drone);
+                    fleet.get().setNoOfDrones(fleet.get().getNoOfDrones() + 1);
+                    fleetRepository.save(fleet.get());
+                } catch (Exception e) {
+                    logger.error(e.getMessage());
+                    throw new RuntimeException("Exception is occurred while registering the drone");
+                }
+                return new HashMap<>() {{
+                    put(true, "Drone has been registered successfully!");
+                }};
+            } else {
+                return new HashMap<>() {{
+                    put(false, "Drone serial number is already exist!");
+                }};
             }
-            return Boolean.TRUE;
         }
-        return Boolean.FALSE;
+        return new HashMap<>() {{
+            put(false, "Fleet is not exist or fleet already filled with 10 drones!");
+        }};
     }
 
     /**
@@ -69,11 +82,11 @@ public class DroneServiceImpl implements DroneService {
      *
      * @param serialNo
      * @param medicationDtos
-     * @return ResponseDto
+     * @return Map
      */
     @Transactional
     @Override
-    public Boolean load(String serialNo, List<MedicationDto> medicationDtos) {
+    public Map<Boolean, String> load(String serialNo, List<MedicationDto> medicationDtos) {
         Optional<Drone> drone = droneRepository.findBySerialNo(serialNo);
         if (drone.isPresent() && drone.get().getBatteryCapacity() >= 25 && drone.get().getAvailableWeight() > 0) {
             Double medsWeight = medicationDtos.stream().mapToDouble(MedicationDto::getWeight).sum();
@@ -89,17 +102,24 @@ public class DroneServiceImpl implements DroneService {
                     logger.error(e.getMessage());
                     throw new RuntimeException("Exception is occurred while loading the drone");
                 }
-                return Boolean.TRUE;
+                return new HashMap<>() {{
+                    put(true, "Drone loading is successful!");
+                }};
+            } else {
+                return new HashMap<>() {{
+                    put(false, "Medications weight is greater than Drone's available weight!");
+                }};
             }
-            return Boolean.FALSE;
         }
-        return Boolean.FALSE;
+        return new HashMap<>() {{
+            put(false, "Drone is not exist or drone battery capacity less than 25% or drone is already loaded!");
+        }};
     }
 
     /**
      * Implementation of checking available drones for loading
      *
-     * @return List<CreateDroneDto>
+     * @return List
      */
     @Override
     public List<DroneDto> getAll() {
@@ -117,15 +137,19 @@ public class DroneServiceImpl implements DroneService {
      * Implementation of check drone battery level for a given drone
      *
      * @param serialNo
-     * @return String
+     * @return Map
      */
     @Override
-    public String getBatteryLevel(String serialNo) {
+    public Map<Boolean, String> getBatteryLevel(String serialNo) {
         Optional<Drone> drone = droneRepository.findBySerialNo(serialNo);
         if (drone.isPresent()) {
-            return drone.get().getBatteryCapacity() + "%";
+            return new HashMap<>() {{
+                put(true, drone.get().getBatteryCapacity() + "%");
+            }};
         }
-        return "Invalid drone serial number!";
+        return new HashMap<>() {{
+            put(false, "Invalid drone serial number!");
+        }};
     }
 
 }

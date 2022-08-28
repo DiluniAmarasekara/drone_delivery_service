@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 
 /**
  * created by Diluni
@@ -36,28 +37,28 @@ public class DroneController {
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public ResponseEntity<String> add(@Valid @RequestBody(required = true) CreateDroneDto createDroneDto) {
         logger.info("Enter the drone add POST REST API");
-        Boolean isSuccess = droneService.add(createDroneDto);
-        return isSuccess ? new ResponseEntity<>("Drone has been registered successfully!", HttpStatus.CREATED) : new ResponseEntity<>("Drone registration is failed!", HttpStatus.EXPECTATION_FAILED);
+        Map<Boolean, String> output = droneService.add(createDroneDto);
+        return output.containsKey(true) ? new ResponseEntity<>(output.get(true), HttpStatus.CREATED) : new ResponseEntity<>(output.get(false), HttpStatus.EXPECTATION_FAILED);
     }
 
     /**
      * REST POST endpoint of loading a drone with medication items
      *
-     * @param serialNo
      * @param medicationDtos
+     * @param serialNo
      * @return ResponseEntity
      */
     @RequestMapping(value = "/load", method = RequestMethod.POST)
     public ResponseEntity<String> load(@Valid @RequestBody(required = true) ValidList<MedicationDto> medicationDtos, @RequestParam(required = true) String serialNo) {
         logger.info("Enter the drone load POST REST API");
-        Boolean isSuccess = droneService.load(serialNo, medicationDtos.getList());
-        return isSuccess ? new ResponseEntity<>("Drone loading is successful!", HttpStatus.CREATED) : new ResponseEntity<>("Drone loading is failed!", HttpStatus.EXPECTATION_FAILED);
+        Map<Boolean, String> output = droneService.load(serialNo, medicationDtos.getList());
+        return output.containsKey(true) ? new ResponseEntity<>(output.get(true), HttpStatus.CREATED) : new ResponseEntity<>(output.get(false), HttpStatus.EXPECTATION_FAILED);
     }
 
     /**
      * REST GET endpoint of checking available drones for loading
      *
-     * @return List<DroneDto>
+     * @return List
      */
     @RequestMapping(value = "/getAll", method = RequestMethod.GET)
     public List<DroneDto> getAll() {
@@ -69,12 +70,13 @@ public class DroneController {
      * REST GET endpoint of check drone battery level for a given drone
      *
      * @param serialNo
-     * @return String
+     * @return ResponseEntity
      */
     @RequestMapping(value = "/get/batteryLevel", method = RequestMethod.GET)
-    public String getBatteryLevel(@RequestParam(required = true) String serialNo) {
+    public ResponseEntity<String> getBatteryLevel(@RequestParam(required = true) String serialNo) {
         logger.info("Enter the drone get battery level GET REST API");
-        return droneService.getBatteryLevel(serialNo);
+        Map<Boolean, String> output = droneService.getBatteryLevel(serialNo);
+        return output.containsKey(true) ? new ResponseEntity<>(output.get(true), HttpStatus.OK) : new ResponseEntity<>(output.get(false), HttpStatus.NOT_FOUND);
     }
 
 }

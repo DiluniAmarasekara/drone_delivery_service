@@ -5,18 +5,19 @@ import com.delivery.drone.dto.DroneDto;
 import com.delivery.drone.dto.MedicationDto;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * created by Diluni
  * on 8/26/2022
  */
 public interface DroneService {
-    Boolean add(CreateDroneDto createDroneDto);
+    Map<Boolean, String> add(CreateDroneDto createDroneDto);
 
-    Boolean load(String serialNo, List<MedicationDto> medicationDtos);
+    Map<Boolean, String> load(String serialNo, List<MedicationDto> medicationDtos);
 
     List<DroneDto> getAll();
 
-    String getBatteryLevel(String serialNo);
+    Map<Boolean, String> getBatteryLevel(String serialNo);
 
 }

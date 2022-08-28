@@ -23,14 +23,7 @@ public class DroneDto {
 
     private Long fleetId;
 
-    private List<MedicationDto> medicationDtos;
-
     public DroneDto() {
-    }
-
-    public DroneDto(String serialNo, Integer batteryCapacity) {
-        this.serialNo = serialNo;
-        this.batteryCapacity = batteryCapacity;
     }
 
     public DroneDto(String serialNo, EnumUtil.Model model, Double weight, Integer batteryCapacity, EnumUtil.State state, Long fleetId) {
