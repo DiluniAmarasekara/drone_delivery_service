@@ -1,6 +1,6 @@
 package com.delivery.drone.service;
 
-import com.delivery.drone.entity.Fleet;
+import com.delivery.drone.dto.FleetDto;
 
 import java.util.List;
 
@@ -11,5 +11,5 @@ import java.util.List;
 public interface FleetService {
     Boolean add(String fleetName);
 
-    List<Fleet> getAll();
+    List<FleetDto> getAll();
 }

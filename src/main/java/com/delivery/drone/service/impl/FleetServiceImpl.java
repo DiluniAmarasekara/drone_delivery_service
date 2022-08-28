@@ -1,5 +1,6 @@
 package com.delivery.drone.service.impl;
 
+import com.delivery.drone.dto.FleetDto;
 import com.delivery.drone.entity.Fleet;
 import com.delivery.drone.repository.FleetRepository;
 import com.delivery.drone.service.FleetService;
@@ -22,6 +23,12 @@ public class FleetServiceImpl implements FleetService {
     @Autowired
     private FleetRepository fleetRepository;
 
+    /**
+     * Implementation of add fleet
+     *
+     * @param fleetName
+     * @return Boolean
+     */
     @Transactional
     @Override
     public Boolean add(String fleetName) {
@@ -33,17 +40,17 @@ public class FleetServiceImpl implements FleetService {
             throw new RuntimeException("Exception is occurred while adding the fleet");
         }
         return Boolean.TRUE;
-//        return new ResponseDto(HttpStatus.CREATED.value(), "Fleet has been registered successfully!");
     }
 
     @Override
-    public List<Fleet> getAll() {
+    public List<FleetDto> getAll() {
+        List<FleetDto> fleetDtos;
         try {
-            return fleetRepository.findAll();
+            fleetDtos = fleetRepository.findAllFleetDtos();
         } catch (Exception e) {
             logger.error(e.getMessage());
             throw new RuntimeException("Exception is occurred while getting all the fleets");
         }
+        return fleetDtos;
     }
-
 }

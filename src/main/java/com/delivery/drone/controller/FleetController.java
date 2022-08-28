@@ -1,6 +1,6 @@
 package com.delivery.drone.controller;
 
-import com.delivery.drone.entity.Fleet;
+import com.delivery.drone.dto.FleetDto;
 import com.delivery.drone.service.FleetService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,7 +43,7 @@ public class FleetController {
      * @return List
      */
     @RequestMapping(value = "/getAll", method = RequestMethod.GET)
-    public List<Fleet> getAll() {
+    public List<FleetDto> getAll() {
         logger.info("Enter the fleet get all GET REST API");
         return fleetService.getAll();
     }
