@@ -44,9 +44,9 @@ class DroneConfigTest {
     void setUp() {
         Optional<Fleet> fleet1 = Optional.of(new Fleet(1L, "fleet-1", 8));
 
-        Optional<Drone> drone1 = Optional.of(new Drone("DC-13245", EnumUtil.Model.Cruiserweight, 300.0, 20.0, 46, fleet1.get()));
-        Optional<Drone> drone2 = Optional.of(new Drone("DC-13246", EnumUtil.Model.Middleweight, 450.0, 450.0, 20, fleet1.get()));
-        Optional<Drone> drone3 = Optional.of(new Drone("DC-13247", EnumUtil.Model.Heavyweight, 200.0, 0.0, 46, fleet1.get()));
+        Optional<Drone> drone1 = Optional.of(new Drone("DC-13245", EnumUtil.Model.CW, 300.0, 20.0, 46, fleet1.get()));
+        Optional<Drone> drone2 = Optional.of(new Drone("DC-13246", EnumUtil.Model.MW, 450.0, 450.0, 20, fleet1.get()));
+        Optional<Drone> drone3 = Optional.of(new Drone("DC-13247", EnumUtil.Model.HW, 200.0, 0.0, 46, fleet1.get()));
 
         drones = List.of(drone1.get(), drone2.get(), drone3.get());
         when(droneRepository.findAll()).thenReturn(drones);
@@ -60,7 +60,7 @@ class DroneConfigTest {
         List<BatteryHistory> batteryHistories = drones.stream()
                 .map(drone -> new BatteryHistory(drone.getBatteryCapacity(), drone)).collect(Collectors.toList());
         droneConfig.batteryAudit();
-        verify(batteryHistoryRepository).saveAllAndFlush(batteryHistories);
+        verify(batteryHistoryRepository).saveAll(batteryHistories);
         Assertions.assertTrue(output.getOut().contains("Battery Audit scheduler is finished at"));
     }
 
@@ -79,7 +79,7 @@ class DroneConfigTest {
      */
     @Test
     void batteryAuditException() {
-        when(batteryHistoryRepository.saveAllAndFlush(any())).thenThrow(new RuntimeException());
+        when(batteryHistoryRepository.saveAll(any())).thenThrow(new RuntimeException());
         RuntimeException exception = assertThrows(RuntimeException.class, () -> {
             droneConfig.batteryAudit();
         });
@@ -92,7 +92,7 @@ class DroneConfigTest {
     @Test
     void batteryPercentageUpdate(CapturedOutput output) {
         droneConfig.batteryPercentageUpdate();
-        verify(droneRepository).saveAllAndFlush(drones);
+        verify(droneRepository).saveAll(drones);
         Assertions.assertTrue(output.getOut().contains("Battery Percentage Update scheduler is finished at"));
     }
 
@@ -111,7 +111,7 @@ class DroneConfigTest {
      */
     @Test
     void batteryPercentageUpdateException() {
-        when(droneRepository.saveAllAndFlush(any())).thenThrow(new RuntimeException());
+        when(droneRepository.saveAll(any())).thenThrow(new RuntimeException());
         RuntimeException exception = assertThrows(RuntimeException.class, () -> {
             droneConfig.batteryPercentageUpdate();
         });
@@ -142,11 +142,10 @@ class DroneConfigTest {
      */
     @Test
     void notAvailableDroneStateUpdateException() {
-        when(droneRepository.saveAllAndFlush(any())).thenThrow(new RuntimeException());
+        when(droneRepository.saveAll(any())).thenThrow(new RuntimeException());
         RuntimeException exception = assertThrows(RuntimeException.class, () -> {
             droneConfig.notAvailableDroneStateUpdate();
         });
         assertEquals("Exception is occurred while running the Not Available Drones State Update scheduler", exception.getMessage());
     }
-
 }
