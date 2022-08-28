@@ -1,8 +1,8 @@
 package com.delivery.drone.service.impl;
 
 import com.delivery.drone.dto.CreateDroneDto;
+import com.delivery.drone.dto.DroneDto;
 import com.delivery.drone.dto.MedicationDto;
-import com.delivery.drone.dto.ResponseDto;
 import com.delivery.drone.entity.Drone;
 import com.delivery.drone.entity.Fleet;
 import com.delivery.drone.repository.DroneRepository;
@@ -14,12 +14,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -50,9 +47,9 @@ class DroneServiceImplTest {
         when(fleetRepository.findById(1L)).thenReturn(fleet1);
         when(fleetRepository.findById(2L)).thenReturn(fleet2);
 
-        Optional<Drone> drone1 = Optional.of(new Drone("DC-13245", EnumUtil.Model.Cruiserweight, 300.0, 20.0, 46, fleet1.get()));
-        Optional<Drone> drone2 = Optional.of(new Drone("DC-13246", EnumUtil.Model.Middleweight, 450.0, 450.0, 20, fleet1.get()));
-        Optional<Drone> drone3 = Optional.of(new Drone("DC-13247", EnumUtil.Model.Heavyweight, 200.0, 0.0, 46, fleet1.get()));
+        Optional<Drone> drone1 = Optional.of(new Drone("DC-13245", EnumUtil.Model.CW, 300.0, 20.0, 46, fleet1.get()));
+        Optional<Drone> drone2 = Optional.of(new Drone("DC-13246", EnumUtil.Model.MW, 450.0, 450.0, 20, fleet1.get()));
+        Optional<Drone> drone3 = Optional.of(new Drone("DC-13247", EnumUtil.Model.HW, 200.0, 0.0, 46, fleet1.get()));
         when(droneRepository.findBySerialNo("DC-13245")).thenReturn(drone1);
         when(droneRepository.findBySerialNo("DC-13246")).thenReturn(drone2);
         when(droneRepository.findBySerialNo("DC-13247")).thenReturn(drone3);
@@ -63,10 +60,13 @@ class DroneServiceImplTest {
      */
     @Test
     void add() {
-        ResponseDto expectedResult = new ResponseDto(HttpStatus.CREATED, "Drone has been registered successfully!");
-        CreateDroneDto createDroneDto1 = new CreateDroneDto("DC-13245", EnumUtil.Model.Middleweight, 500.0, 70, 1L);
-        ResponseDto actualResult = droneService.add(createDroneDto1);
-        assertEquals(expectedResult.getStatus(), actualResult.getStatus());
+        Map<Boolean, String> expectedResult = new HashMap<>() {{
+            put(true, "Drone has been registered successfully!");
+        }};
+        CreateDroneDto createDroneDto1 = new CreateDroneDto("DC-13248", EnumUtil.Model.MW.toString(), 500.0, 70, 1L);
+        Map<Boolean, String> actualResult = droneService.add(createDroneDto1);
+        assertEquals(expectedResult.size(), actualResult.size());
+        assertEquals(expectedResult.get(true), actualResult.get(true));
     }
 
     /**
@@ -74,10 +74,13 @@ class DroneServiceImplTest {
      */
     @Test
     void addNullFleet() {
-        ResponseDto expectedResult = new ResponseDto(HttpStatus.BAD_REQUEST, "Invalid Fleet Id or fleet is already filled with 10 drones! Drone registration is failed!");
-        CreateDroneDto createDroneDto1 = new CreateDroneDto("DC-13245", EnumUtil.Model.Middleweight, 500.0, 70, 3L);
-        ResponseDto actualResult = droneService.add(createDroneDto1);
-        assertEquals(expectedResult.getStatus(), actualResult.getStatus());
+        Map<Boolean, String> expectedResult = new HashMap<>() {{
+            put(false, "Fleet is not exist or fleet already filled with 10 drones!");
+        }};
+        CreateDroneDto createDroneDto1 = new CreateDroneDto("DC-13245", EnumUtil.Model.MW.toString(), 500.0, 70, 3L);
+        Map<Boolean, String> actualResult = droneService.add(createDroneDto1);
+        assertEquals(expectedResult.size(), actualResult.size());
+        assertEquals(expectedResult.get(false), actualResult.get(false));
     }
 
     /**
@@ -85,10 +88,27 @@ class DroneServiceImplTest {
      */
     @Test
     void addNoOfDronesExceedFleet() {
-        ResponseDto expectedResult = new ResponseDto(HttpStatus.BAD_REQUEST, "Invalid Fleet Id or fleet is already filled with 10 drones! Drone registration is failed!");
-        CreateDroneDto createDroneDto1 = new CreateDroneDto("DC-13245", EnumUtil.Model.Middleweight, 500.0, 70, 2L);
-        ResponseDto actualResult = droneService.add(createDroneDto1);
-        assertEquals(expectedResult.getStatus(), actualResult.getStatus());
+        Map<Boolean, String> expectedResult = new HashMap<>() {{
+            put(false, "Fleet is not exist or fleet already filled with 10 drones!");
+        }};
+        CreateDroneDto createDroneDto1 = new CreateDroneDto("DC-13245", EnumUtil.Model.MW.toString(), 500.0, 70, 2L);
+        Map<Boolean, String> actualResult = droneService.add(createDroneDto1);
+        assertEquals(expectedResult.size(), actualResult.size());
+        assertEquals(expectedResult.get(false), actualResult.get(false));
+    }
+
+    /**
+     * Serial number is already exist scenario of add drone
+     */
+    @Test
+    void addAlreadyExist() {
+        Map<Boolean, String> expectedResult = new HashMap<>() {{
+            put(false, "Drone serial number is already exist!");
+        }};
+        CreateDroneDto createDroneDto1 = new CreateDroneDto("DC-13245", EnumUtil.Model.MW.toString(), 500.0, 70, 1L);
+        Map<Boolean, String> actualResult = droneService.add(createDroneDto1);
+        assertEquals(expectedResult.size(), actualResult.size());
+        assertEquals(expectedResult.get(false), actualResult.get(false));
     }
 
     /**
@@ -97,7 +117,7 @@ class DroneServiceImplTest {
     @Test
     void addException() {
         when(droneRepository.save(any())).thenThrow(new RuntimeException());
-        CreateDroneDto createDroneDto1 = new CreateDroneDto("DC-13245", EnumUtil.Model.Middleweight, 500.0, 70, 1L);
+        CreateDroneDto createDroneDto1 = new CreateDroneDto("DC-13248", EnumUtil.Model.MW.toString(), 500.0, 70, 1L);
         RuntimeException exception = assertThrows(RuntimeException.class, () -> {
             droneService.add(createDroneDto1);
         });
@@ -109,11 +129,14 @@ class DroneServiceImplTest {
      */
     @Test
     void load() {
-        ResponseDto expectedResult = new ResponseDto(HttpStatus.CREATED, "Drone has been loaded successfully!");
+        Map<Boolean, String> expectedResult = new HashMap<>() {{
+            put(true, "Drone loading is successful!");
+        }};
         MedicationDto medicationDto1 = new MedicationDto("MED-1", 10.5, "HH_GR6", "/this/folder/image.png");
         List<MedicationDto> medicationDtos = List.of(medicationDto1);
-        ResponseDto actualResult = droneService.load("DC-13245", medicationDtos);
-        assertEquals(expectedResult.getStatus(), actualResult.getStatus());
+        Map<Boolean, String> actualResult = droneService.load("DC-13245", medicationDtos);
+        assertEquals(expectedResult.size(), actualResult.size());
+        assertEquals(expectedResult.get(true), actualResult.get(true));
     }
 
     /**
@@ -121,11 +144,14 @@ class DroneServiceImplTest {
      */
     @Test
     void loadNullDrone() {
-        ResponseDto expectedResult = new ResponseDto(HttpStatus.BAD_REQUEST, "Drone loading is failed! Make sure whether Drone Serial Number is correct, Drone battery capacity is not less than 25% and Drone already is not fully loaded!");
+        Map<Boolean, String> expectedResult = new HashMap<>() {{
+            put(false, "Drone is not exist or drone battery capacity less than 25% or drone is already loaded!");
+        }};
         MedicationDto medicationDto1 = new MedicationDto("MED-1", 10.5, "HH_GR6", "/this/folder/image.png");
         List<MedicationDto> medicationDtos = List.of(medicationDto1);
-        ResponseDto actualResult = droneService.load("DC-13000", medicationDtos);
-        assertEquals(expectedResult.getStatus(), actualResult.getStatus());
+        Map<Boolean, String> actualResult = droneService.load("DC-13000", medicationDtos);
+        assertEquals(expectedResult.size(), actualResult.size());
+        assertEquals(expectedResult.get(false), actualResult.get(false));
     }
 
     /**
@@ -133,11 +159,14 @@ class DroneServiceImplTest {
      */
     @Test
     void loadLessBatteryCapacity() {
-        ResponseDto expectedResult = new ResponseDto(HttpStatus.BAD_REQUEST, "Drone loading is failed! Make sure whether Drone Serial Number is correct, Drone battery capacity is not less than 25% and Drone already is not fully loaded!");
+        Map<Boolean, String> expectedResult = new HashMap<>() {{
+            put(false, "Drone is not exist or drone battery capacity less than 25% or drone is already loaded!");
+        }};
         MedicationDto medicationDto1 = new MedicationDto("MED-1", 10.5, "HH_GR6", "/this/folder/image.png");
         List<MedicationDto> medicationDtos = List.of(medicationDto1);
-        ResponseDto actualResult = droneService.load("DC-13246", medicationDtos);
-        assertEquals(expectedResult.getStatus(), actualResult.getStatus());
+        Map<Boolean, String> actualResult = droneService.load("DC-13246", medicationDtos);
+        assertEquals(expectedResult.size(), actualResult.size());
+        assertEquals(expectedResult.get(false), actualResult.get(false));
     }
 
     /**
@@ -145,11 +174,14 @@ class DroneServiceImplTest {
      */
     @Test
     void loadNoAvailableWeight() {
-        ResponseDto expectedResult = new ResponseDto(HttpStatus.BAD_REQUEST, "Drone loading is failed! Make sure whether Drone Serial Number is correct, Drone battery capacity is not less than 25% and Drone already is not fully loaded!");
+        Map<Boolean, String> expectedResult = new HashMap<>() {{
+            put(false, "Drone is not exist or drone battery capacity less than 25% or drone is already loaded!");
+        }};
         MedicationDto medicationDto1 = new MedicationDto("MED-1", 10.5, "HH_GR6", "/this/folder/image.png");
         List<MedicationDto> medicationDtos = List.of(medicationDto1);
-        ResponseDto actualResult = droneService.load("DC-13247", medicationDtos);
-        assertEquals(expectedResult.getStatus(), actualResult.getStatus());
+        Map<Boolean, String> actualResult = droneService.load("DC-13247", medicationDtos);
+        assertEquals(expectedResult.size(), actualResult.size());
+        assertEquals(expectedResult.get(false), actualResult.get(false));
     }
 
     /**
@@ -157,11 +189,14 @@ class DroneServiceImplTest {
      */
     @Test
     void loadMedWeightGreaterThan() {
-        ResponseDto expectedResult = new ResponseDto(HttpStatus.NOT_ACCEPTABLE, "Drone loading is failed! Drone does not have enough space for entered medications weight!");
-        MedicationDto medicationDto1 = new MedicationDto("MED-1", 40.0, "HH_GR6", "/this/folder/image.png");
+        Map<Boolean, String> expectedResult = new HashMap<>() {{
+            put(false, "Medications weight is greater than Drone's available weight!");
+        }};
+        MedicationDto medicationDto1 = new MedicationDto("MED-1", 40.5, "HH_GR6", "/this/folder/image.png");
         List<MedicationDto> medicationDtos = List.of(medicationDto1);
-        ResponseDto actualResult = droneService.load("DC-13245", medicationDtos);
-        assertEquals(expectedResult.getStatus(), actualResult.getStatus());
+        Map<Boolean, String> actualResult = droneService.load("DC-13245", medicationDtos);
+        assertEquals(expectedResult.size(), actualResult.size());
+        assertEquals(expectedResult.get(false), actualResult.get(false));
     }
 
     /**
@@ -169,7 +204,7 @@ class DroneServiceImplTest {
      */
     @Test
     void loadException() {
-        when(medicationRepository.saveAllAndFlush(any())).thenThrow(new RuntimeException());
+        when(medicationRepository.saveAll(any())).thenThrow(new RuntimeException());
         MedicationDto medicationDto1 = new MedicationDto("MED-1", 10.0, "HH_GR6", "/this/folder/image.png");
         List<MedicationDto> medicationDtos = List.of(medicationDto1);
         RuntimeException exception = assertThrows(RuntimeException.class, () -> {
@@ -183,12 +218,12 @@ class DroneServiceImplTest {
      */
     @Test
     void getAll() {
-        CreateDroneDto createDroneDto1 = new CreateDroneDto("DC-13245", EnumUtil.Model.Middleweight, 500.0, 70, 1L);
-        List<CreateDroneDto> droneDtos = List.of(createDroneDto1);
+        DroneDto DroneDto1 = new DroneDto("DC-13245", EnumUtil.Model.MW, 500.0, 70, EnumUtil.State.IDLE, 1L);
+        DroneDto DroneDto2 = new DroneDto("DC-13246", EnumUtil.Model.CW, 360.0, 50, EnumUtil.State.LOADING, 1L);
+        List<DroneDto> droneDtos = List.of(DroneDto1, DroneDto2);
         when(droneRepository.findAllAvailableDroneDtos()).thenReturn(droneDtos);
-
-        List<CreateDroneDto> actualResult = droneService.getAll();
-        assertEquals(1, actualResult.size());
+        List<DroneDto> actualResult = droneService.getAll();
+        assertEquals(2, actualResult.size());
     }
 
     /**
@@ -208,9 +243,12 @@ class DroneServiceImplTest {
      */
     @Test
     void getBatteryLevel() {
-        String actualResult = droneService.getBatteryLevel("DC-13245");
-        assertEquals("46%", actualResult);
-
+        Map<Boolean, String> expectedResult = new HashMap<>() {{
+            put(true, "46%");
+        }};
+        Map<Boolean, String> actualResult = droneService.getBatteryLevel("DC-13245");
+        assertEquals(expectedResult.size(), actualResult.size());
+        assertEquals(expectedResult.get(true), actualResult.get(true));
     }
 
     /**
@@ -218,9 +256,11 @@ class DroneServiceImplTest {
      */
     @Test
     void getBatteryLevelDroneNull() {
-        String actualResult = droneService.getBatteryLevel("DC-13000");
-        assertEquals("Invalid drone serial number!", actualResult);
-
+        Map<Boolean, String> expectedResult = new HashMap<>() {{
+            put(false, "Invalid drone serial number!");
+        }};
+        Map<Boolean, String> actualResult = droneService.getBatteryLevel("DC-13000");
+        assertEquals(expectedResult.size(), actualResult.size());
+        assertEquals(expectedResult.get(false), actualResult.get(false));
     }
-
 }
