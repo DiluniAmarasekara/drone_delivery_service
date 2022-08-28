@@ -1,7 +1,6 @@
 package com.delivery.drone.dto;
 
 import lombok.Data;
-import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.DecimalMin;
@@ -25,11 +24,13 @@ public class MedicationDto {
 
     private String imagePath;
 
+    public MedicationDto() {
+    }
+
     public MedicationDto(String name, Double weight, String code, String imagePath) {
         this.name = name;
         this.weight = weight;
         this.code = code;
         this.imagePath = imagePath;
     }
-
 }

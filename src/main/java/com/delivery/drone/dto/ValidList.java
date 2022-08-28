@@ -12,7 +12,6 @@ import java.util.*;
  */
 @Data
 public class ValidList<E> implements List<E> {
-
     @Valid
     @Delegate
     private List<E> list = new ArrayList<>();
@@ -24,5 +23,4 @@ public class ValidList<E> implements List<E> {
     public ValidList(List<E> list) {
         this.list = list;
     }
-
 }

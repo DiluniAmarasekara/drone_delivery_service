@@ -34,5 +34,4 @@ public class DroneDto {
         this.state = state;
         this.fleetId = fleetId;
     }
-
 }

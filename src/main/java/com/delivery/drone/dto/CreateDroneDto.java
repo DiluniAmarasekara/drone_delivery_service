@@ -40,5 +40,4 @@ public class CreateDroneDto {
         this.batteryCapacity = batteryCapacity;
         this.fleetId = fleetId;
     }
-
 }
