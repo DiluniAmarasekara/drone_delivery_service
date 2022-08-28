@@ -43,19 +43,29 @@ public class Drone extends BaseEntity {
         this.fleet = fleet;
     }
 
-    /**
-     * Set status of the drone just before inserting and updating
-     */
-    @PrePersist
-    @PreUpdate
-    private void beforeCreateOrUpdate() {
-        if (this.getAvailableWeight() == this.weightLimit) {
-            this.state = EnumUtil.State.IDLE;
-        } else if (this.getAvailableWeight() > 0) {
-            this.state = EnumUtil.State.LOADING;
-        } else if (this.getAvailableWeight() == 0) {
-            this.state = EnumUtil.State.LOADED;
-        }
+    public Drone(String serialNo, EnumUtil.Model model, Double weightLimit, Double availableWeight, Integer batteryCapacity, EnumUtil.State state, Fleet fleet) {
+        this.serialNo = serialNo;
+        this.model = model;
+        this.weightLimit = weightLimit;
+        this.availableWeight = availableWeight;
+        this.batteryCapacity = batteryCapacity;
+        this.state = state;
+        this.fleet = fleet;
     }
+
+//    /**
+//     * Set status of the drone just before inserting and updating
+//     */
+//    @PrePersist
+//    @PreUpdate
+//    private void beforeCreateOrUpdate() {
+//        if (this.getAvailableWeight() == this.weightLimit) {
+//            this.state = EnumUtil.State.IDLE;
+//        } else if (this.getAvailableWeight() > 0 && this.getAvailableWeight() > 0) {
+//            this.state = EnumUtil.State.LOADING;
+//        } else if (this.getAvailableWeight() == 0) {
+//            this.state = EnumUtil.State.LOADED;
+//        }
+//    }
 
 }

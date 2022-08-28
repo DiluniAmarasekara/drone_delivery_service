@@ -20,4 +20,6 @@ public interface DroneService {
 
     Map<Boolean, String> getBatteryLevel(String serialNo);
 
+    Map<Boolean, String> updateState(String serialNo);
+
 }

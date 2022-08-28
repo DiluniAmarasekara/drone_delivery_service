@@ -17,4 +17,6 @@ public interface MedicationRepository extends JpaRepository<Medication, Long> {
     @Query("SELECT DISTINCT new com.delivery.drone.dto.MedicationDto(b.name, b.weight, b.code, b.imagePath) FROM Drone a LEFT JOIN Medication b ON a.serialNo=b.drone.serialNo WHERE b.drone.serialNo=:serialNo")
     List<MedicationDto> findAllMedicationDtos(String serialNo);
 
+    List<Medication> findAllByDrone_SerialNoAndIsDelivered(String serialNo, boolean isDelivered);
+
 }

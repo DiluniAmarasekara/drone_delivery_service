@@ -16,7 +16,7 @@ import java.util.Optional;
  */
 @Repository
 public interface DroneRepository extends JpaRepository<Drone, Long> {
-    @Query("SELECT DISTINCT new com.delivery.drone.dto.DroneDto(b.serialNo, b.model, b.availableWeight, b.batteryCapacity, b.state, a.fleetId) FROM Fleet a LEFT JOIN Drone b ON a.fleetId=b.fleet.fleetId WHERE a.noOfDrones<10 AND b.batteryCapacity>=25 AND b.availableWeight>0")
+    @Query("SELECT DISTINCT new com.delivery.drone.dto.DroneDto(b.serialNo, b.model, b.availableWeight, b.batteryCapacity, b.state, a.fleetId) FROM Fleet a LEFT JOIN Drone b ON a.fleetId=b.fleet.fleetId WHERE a.noOfDrones<10 AND b.batteryCapacity>=25 AND b.state=1 OR b.state=0")
     List<DroneDto> findAllAvailableDroneDtos();
 
     List<Drone> findByStateNotIn(List<EnumUtil.State> asList);

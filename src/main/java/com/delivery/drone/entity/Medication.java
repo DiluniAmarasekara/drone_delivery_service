@@ -23,6 +23,8 @@ public class Medication extends BaseEntity {
 
     private String imagePath;
 
+    private Boolean isDelivered = Boolean.FALSE;
+
     @ManyToOne
     @JoinColumn(name = "serial_no")
     private Drone drone;

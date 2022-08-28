@@ -79,4 +79,17 @@ public class DroneController {
         return output.containsKey(true) ? new ResponseEntity<>(output.get(true), HttpStatus.OK) : new ResponseEntity<>(output.get(false), HttpStatus.NOT_FOUND);
     }
 
+    /**
+     * REST PUT endpoint of update drone status LOADED->DELIVERING->DELIVERED->RETURNING->IDLE
+     *
+     * @param serialNo
+     * @return
+     */
+    @RequestMapping(value = "/update/state", method = RequestMethod.PUT)
+    public ResponseEntity<String> updateState(@RequestParam(required = true) String serialNo) {
+        logger.info("Enter the update state POST REST API");
+        Map<Boolean, String> output = droneService.updateState(serialNo);
+        return output.containsKey(true) ? new ResponseEntity<>(output.get(true), HttpStatus.CREATED) : new ResponseEntity<>(output.get(false), HttpStatus.EXPECTATION_FAILED);
+    }
+
 }

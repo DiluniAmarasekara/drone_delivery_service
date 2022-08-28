@@ -4,7 +4,6 @@ import com.delivery.drone.entity.BatteryHistory;
 import com.delivery.drone.entity.Drone;
 import com.delivery.drone.repository.BatteryHistoryRepository;
 import com.delivery.drone.repository.DroneRepository;
-import com.delivery.drone.util.EnumUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,13 +23,6 @@ import java.util.stream.Collectors;
 @EnableScheduling
 public class DroneConfig {
     Logger logger = LoggerFactory.getLogger(DroneConfig.class);
-
-    final Map<EnumUtil.State, EnumUtil.State> stateContinuation = new HashMap<>() {{
-        put(EnumUtil.State.LOADED, EnumUtil.State.DELIVERING);
-        put(EnumUtil.State.DELIVERING, EnumUtil.State.DELIVERED);
-        put(EnumUtil.State.DELIVERED, EnumUtil.State.RETURNING);
-        put(EnumUtil.State.RETURNING, EnumUtil.State.IDLE);
-    }};
 
     @Autowired
     private DroneRepository droneRepository;
@@ -70,7 +62,11 @@ public class DroneConfig {
         List<Drone> drones = droneRepository.findAll();
         if (drones != null) {
             try {
-                drones.forEach(drone -> drone.setBatteryCapacity(drone.getBatteryCapacity() - 1));
+                drones.forEach(drone -> {
+                    if (drone.getBatteryCapacity() > 0) {
+                        drone.setBatteryCapacity(drone.getBatteryCapacity() - 1);
+                    }
+                });
                 droneRepository.saveAll(drones);
             } catch (Exception e) {
                 logger.info("Encountered with an exception at " + new Date() + " " + e.getMessage());
@@ -81,29 +77,6 @@ public class DroneConfig {
             logger.info("No drones available to update battery percentage!");
         }
         logger.info("Battery Percentage Update scheduler exit at " + new Date());
-    }
-
-    /**
-     * Periodic method to continue update state of not available drones in each 15 minutes
-     * LOADED->DELIVERING->DELIVERED->RETURNING->IDLE
-     */
-    @Scheduled(fixedRate = 15, initialDelay = 5, timeUnit = TimeUnit.MINUTES)
-    public void notAvailableDroneStateUpdate() {
-        logger.info("Not Available Drone State Update scheduler is running at " + new Date());
-        List<Drone> drones = droneRepository.findByStateNotIn(Arrays.asList(EnumUtil.State.IDLE, EnumUtil.State.LOADING));
-        if (drones != null) {
-            try {
-                drones.forEach(drone -> drone.setState(stateContinuation.get(drone.getState())));
-                droneRepository.saveAll(drones);
-            } catch (Exception e) {
-                logger.info("Encountered with an exception at " + new Date() + " " + e.getMessage());
-                throw new RuntimeException("Exception is occurred while running the Not Available Drones State Update scheduler");
-            }
-            logger.info("Not Available Drone State Update scheduler is finished at " + new Date());
-        } else {
-            logger.info("No non-available drones to update the state!");
-        }
-        logger.info("Not Available Drone State Update scheduler exit at " + new Date());
     }
 
 }
