@@ -35,5 +35,4 @@ public class MedicationController {
         logger.info("Enter the get all GET REST API");
         return medicationService.getAll(serialNo);
     }
-
 }

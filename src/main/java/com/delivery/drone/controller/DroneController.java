@@ -78,5 +78,4 @@ public class DroneController {
         Map<Boolean, String> output = droneService.getBatteryLevel(serialNo);
         return output.containsKey(true) ? new ResponseEntity<>(output.get(true), HttpStatus.OK) : new ResponseEntity<>(output.get(false), HttpStatus.NOT_FOUND);
     }
-
 }
