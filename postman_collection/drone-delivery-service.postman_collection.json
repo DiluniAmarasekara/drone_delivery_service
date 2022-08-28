@@ -1,0 +1,977 @@
+{
+	"info": {
+		"_postman_id": "7e94f050-05bd-4e0a-93ba-56cff57db8de",
+		"name": "drone-delivery-service",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "4312975"
+	},
+	"item": [
+		{
+			"name": "Add a fleet",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/drone-service/fleet/add?fleetName=fleet_1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"drone-service",
+						"fleet",
+						"add"
+					],
+					"query": [
+						{
+							"key": "fleetName",
+							"value": "fleet_1"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Success",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/drone-service/fleet/add?fleetName=fleet_1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"drone-service",
+								"fleet",
+								"add"
+							],
+							"query": [
+								{
+									"key": "fleetName",
+									"value": "fleet_1"
+								}
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "plain",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain;charset=UTF-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "39"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 28 Aug 2022 19:26:03 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "Fleet has been registered successfully!"
+				}
+			]
+		},
+		{
+			"name": "Get all fleets",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/drone-service/fleet/getAll",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"drone-service",
+						"fleet",
+						"getAll"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Success",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/drone-service/fleet/getAll",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"drone-service",
+								"fleet",
+								"getAll"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 28 Aug 2022 19:36:58 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"fleetId\": 67,\n        \"fleetName\": \"fleet_2\",\n        \"noOfDrones\": 0\n    },\n    {\n        \"fleetId\": 66,\n        \"fleetName\": \"fleet_1\",\n        \"noOfDrones\": 1\n    }\n]"
+				}
+			]
+		},
+		{
+			"name": "Add a drone",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"serialNo\":\"abc-100\",\r\n   \"model\":\"lw\",\r\n   \"availableWeight\":400,\r\n   \"batteryCapacity\":70,\r\n   \"fleetId\":\"66\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/drone-service/drone/add",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"drone-service",
+						"drone",
+						"add"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Validations",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"serialNo\":\"abc-1000000000000000000000000000000000000000000000000000000000000000000000000000000000008888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888\",\r\n   \"model\":\"bb\",\r\n   \"availableWeight\":800,\r\n   \"batteryCapacity\":200,\r\n   \"fleetId\":\"66\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/drone-service/drone/add",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"drone-service",
+								"drone",
+								"add"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 28 Aug 2022 19:49:32 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "close"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"status\": \"BAD_REQUEST\",\n    \"message\": \"Validation failed for argument [0] in public org.springframework.http.ResponseEntity<java.lang.String> com.delivery.drone.controller.DroneController.add(com.delivery.drone.dto.CreateDroneDto) with 4 errors: [Field error in object 'createDroneDto' on field 'batteryCapacity': rejected value [200]; codes [Max.createDroneDto.batteryCapacity,Max.batteryCapacity,Max.java.lang.Integer,Max]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [createDroneDto.batteryCapacity,batteryCapacity]; arguments []; default message [batteryCapacity],100]; default message [Invalid Battery Capacity!]] [Field error in object 'createDroneDto' on field 'model': rejected value [bb]; codes [ValidateEnum.createDroneDto.model,ValidateEnum.model,ValidateEnum.java.lang.String,ValidateEnum]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [createDroneDto.model,model]; arguments []; default message [model],class com.delivery.drone.util.EnumUtil$Model]; default message [Model should be one from LW, MW, CW, HW!]] [Field error in object 'createDroneDto' on field 'availableWeight': rejected value [800.0]; codes [DecimalMax.createDroneDto.availableWeight,DecimalMax.availableWeight,DecimalMax.java.lang.Double,DecimalMax]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [createDroneDto.availableWeight,availableWeight]; arguments []; default message [availableWeight],true,500.0]; default message [Weight should be no more than 500g!]] [Field error in object 'createDroneDto' on field 'serialNo': rejected value [abc-1000000000000000000000000000000000000000000000000000000000000000000000000000000000008888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888]; codes [Size.createDroneDto.serialNo,Size.serialNo,Size.java.lang.String,Size]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [createDroneDto.serialNo,serialNo]; arguments []; default message [serialNo],100,0]; default message [Serial Number should be max 100 characters!]] \",\n    \"errors\": [\n        \"batteryCapacity: Invalid Battery Capacity!\",\n        \"model: Model should be one from LW, MW, CW, HW!\",\n        \"availableWeight: Weight should be no more than 500g!\",\n        \"serialNo: Serial Number should be max 100 characters!\"\n    ]\n}"
+				},
+				{
+					"name": "Success",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"serialNo\":\"abc-100\",\r\n   \"model\":\"lw\",\r\n   \"availableWeight\":400,\r\n   \"batteryCapacity\":70,\r\n   \"fleetId\":\"66\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/drone-service/drone/add",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"drone-service",
+								"drone",
+								"add"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "plain",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain;charset=UTF-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "39"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 28 Aug 2022 19:36:42 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "Drone has been registered successfully!"
+				},
+				{
+					"name": "Unsuccess",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"serialNo\":\"abc-100\",\r\n   \"model\":\"lw\",\r\n   \"availableWeight\":400,\r\n   \"batteryCapacity\":70,\r\n   \"fleetId\":\"66\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/drone-service/drone/add",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"drone-service",
+								"drone",
+								"add"
+							]
+						}
+					},
+					"status": "Expectation Failed",
+					"code": 417,
+					"_postman_previewlanguage": "plain",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain;charset=UTF-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "37"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 28 Aug 2022 20:13:06 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "Drone serial number is already exist!"
+				}
+			]
+		},
+		{
+			"name": "Load the drone",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "[\r\n      {\r\n         \"name\":\"med-6\",\r\n         \"weight\":200,\r\n         \"code\":\"CODE_6\",\r\n         \"imagePath\":\"/path/image1.jpg\"\r\n      },\r\n      {\r\n         \"name\":\"med-7\",\r\n         \"weight\":30,\r\n         \"code\":\"CODE_7\",\r\n         \"imagePath\":\"/src/img/image2.png\"\r\n      },\r\n       {\r\n         \"name\":\"med-8\",\r\n         \"weight\":50,\r\n         \"code\":\"CODE_8\",\r\n         \"imagePath\":\"/path/image3.png\"\r\n      }\r\n   ]\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/drone-service/drone/load?serialNo=abc-101",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"drone-service",
+						"drone",
+						"load"
+					],
+					"query": [
+						{
+							"key": "serialNo",
+							"value": "abc-101"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Validations",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\r\n      {\r\n         \"name\":\"med-1!\",\r\n         \"weight\":2000,\r\n         \"code\":\"CODE-1\",\r\n         \"imagePath\":\"/path/image1\"\r\n      },\r\n      {\r\n         \"name\":\"med-2\",\r\n         \"weight\":30,\r\n         \"code\":\"code_2\",\r\n         \"imagePath\":\"/src/img/image2.png\"\r\n      },\r\n       {\r\n         \"name\":\"med-3\",\r\n         \"weight\":50,\r\n         \"code\":\"CODE_3\",\r\n         \"imagePath\":\"/path/image3\"\r\n      }\r\n   ]\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/drone-service/drone/load?serialNo=abc-101",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"drone-service",
+								"drone",
+								"load"
+							],
+							"query": [
+								{
+									"key": "serialNo",
+									"value": "abc-101"
+								}
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 28 Aug 2022 20:05:33 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "close"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"status\": \"BAD_REQUEST\",\n    \"message\": \"Validation failed for argument [0] in public org.springframework.http.ResponseEntity<java.lang.String> com.delivery.drone.controller.DroneController.load(com.delivery.drone.dto.ValidList<com.delivery.drone.dto.MedicationDto>,java.lang.String) with 6 errors: [Field error in object 'medicationDtoList' on field 'list[1].code': rejected value [code_2]; codes [Pattern.medicationDtoList.list[1].code,Pattern.medicationDtoList.list.code,Pattern.list[1].code,Pattern.list.code,Pattern.code,Pattern.java.lang.String,Pattern]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [medicationDtoList.list[1].code,list[1].code]; arguments []; default message [list[1].code],[Ljavax.validation.constraints.Pattern$Flag;@43cd8aed,^[A-Z_0-9]*$]; default message [Invalid medication code! This allows only upper case letters, underscore and numbers]] [Field error in object 'medicationDtoList' on field 'list[0].name': rejected value [med-1!]; codes [Pattern.medicationDtoList.list[0].name,Pattern.medicationDtoList.list.name,Pattern.list[0].name,Pattern.list.name,Pattern.name,Pattern.java.lang.String,Pattern]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [medicationDtoList.list[0].name,list[0].name]; arguments []; default message [list[0].name],[Ljavax.validation.constraints.Pattern$Flag;@43cd8aed,^[\\\\w\\\\-]*$]; default message [Invalid medication name! This allows only letters, numbers, ‘-‘, ‘_’]] [Field error in object 'medicationDtoList' on field 'list[2].imagePath': rejected value [/path/image3]; codes [Pattern.medicationDtoList.list[2].imagePath,Pattern.medicationDtoList.list.imagePath,Pattern.list[2].imagePath,Pattern.list.imagePath,Pattern.imagePath,Pattern.java.lang.String,Pattern]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [medicationDtoList.list[2].imagePath,list[2].imagePath]; arguments []; default message [list[2].imagePath],[Ljavax.validation.constraints.Pattern$Flag;@43cd8aed,(\\\\/.*?\\\\.\\\\w{3})]; default message [Invalid image path!]] [Field error in object 'medicationDtoList' on field 'list[0].code': rejected value [CODE-1]; codes [Pattern.medicationDtoList.list[0].code,Pattern.medicationDtoList.list.code,Pattern.list[0].code,Pattern.list.code,Pattern.code,Pattern.java.lang.String,Pattern]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [medicationDtoList.list[0].code,list[0].code]; arguments []; default message [list[0].code],[Ljavax.validation.constraints.Pattern$Flag;@43cd8aed,^[A-Z_0-9]*$]; default message [Invalid medication code! This allows only upper case letters, underscore and numbers]] [Field error in object 'medicationDtoList' on field 'list[0].weight': rejected value [2000.0]; codes [DecimalMax.medicationDtoList.list[0].weight,DecimalMax.medicationDtoList.list.weight,DecimalMax.list[0].weight,DecimalMax.list.weight,DecimalMax.weight,DecimalMax.java.lang.Double,DecimalMax]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [medicationDtoList.list[0].weight,list[0].weight]; arguments []; default message [list[0].weight],true,500.0]; default message [Weight should be no more than 500g!]] [Field error in object 'medicationDtoList' on field 'list[0].imagePath': rejected value [/path/image1]; codes [Pattern.medicationDtoList.list[0].imagePath,Pattern.medicationDtoList.list.imagePath,Pattern.list[0].imagePath,Pattern.list.imagePath,Pattern.imagePath,Pattern.java.lang.String,Pattern]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [medicationDtoList.list[0].imagePath,list[0].imagePath]; arguments []; default message [list[0].imagePath],[Ljavax.validation.constraints.Pattern$Flag;@43cd8aed,(\\\\/.*?\\\\.\\\\w{3})]; default message [Invalid image path!]] \",\n    \"errors\": [\n        \"list[1].code: Invalid medication code! This allows only upper case letters, underscore and numbers\",\n        \"list[0].name: Invalid medication name! This allows only letters, numbers, ‘-‘, ‘_’\",\n        \"list[2].imagePath: Invalid image path!\",\n        \"list[0].code: Invalid medication code! This allows only upper case letters, underscore and numbers\",\n        \"list[0].weight: Weight should be no more than 500g!\",\n        \"list[0].imagePath: Invalid image path!\"\n    ]\n}"
+				},
+				{
+					"name": "Success",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\r\n      {\r\n         \"name\":\"med-6\",\r\n         \"weight\":200,\r\n         \"code\":\"CODE_6\",\r\n         \"imagePath\":\"/path/image1.jpg\"\r\n      },\r\n      {\r\n         \"name\":\"med-7\",\r\n         \"weight\":30,\r\n         \"code\":\"CODE_7\",\r\n         \"imagePath\":\"/src/img/image2.png\"\r\n      },\r\n       {\r\n         \"name\":\"med-8\",\r\n         \"weight\":50,\r\n         \"code\":\"CODE_8\",\r\n         \"imagePath\":\"/path/image3.png\"\r\n      }\r\n   ]\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/drone-service/drone/load?serialNo=abc-101",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"drone-service",
+								"drone",
+								"load"
+							],
+							"query": [
+								{
+									"key": "serialNo",
+									"value": "abc-101"
+								}
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "plain",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain;charset=UTF-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "28"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 28 Aug 2022 20:07:21 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "Drone loading is successful!"
+				},
+				{
+					"name": "Unsuccess",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\r\n      {\r\n         \"name\":\"med-6\",\r\n         \"weight\":200,\r\n         \"code\":\"CODE_6\",\r\n         \"imagePath\":\"/path/image1.jpg\"\r\n      },\r\n      {\r\n         \"name\":\"med-7\",\r\n         \"weight\":30,\r\n         \"code\":\"CODE_7\",\r\n         \"imagePath\":\"/src/img/image2.png\"\r\n      },\r\n       {\r\n         \"name\":\"med-8\",\r\n         \"weight\":50,\r\n         \"code\":\"CODE_8\",\r\n         \"imagePath\":\"/path/image3.png\"\r\n      }\r\n   ]\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/drone-service/drone/load?serialNo=abc-1000",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"drone-service",
+								"drone",
+								"load"
+							],
+							"query": [
+								{
+									"key": "serialNo",
+									"value": "abc-1000"
+								}
+							]
+						}
+					},
+					"status": "Expectation Failed",
+					"code": 417,
+					"_postman_previewlanguage": "plain",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain;charset=UTF-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "86"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 28 Aug 2022 20:12:20 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "Drone is not exist or drone battery capacity less than 25% or drone is already loaded!"
+				}
+			]
+		},
+		{
+			"name": "Get all available drones",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/drone-service/drone/getAll",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"drone-service",
+						"drone",
+						"getAll"
+					]
+				},
+				"description": "Get all drones which have enough weight to load medications"
+			},
+			"response": [
+				{
+					"name": "Success",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/drone-service/drone/getAll",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"drone-service",
+								"drone",
+								"getAll"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 28 Aug 2022 19:44:50 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"serialNo\": \"abc-101\",\n        \"model\": \"CW\",\n        \"weight\": 410,\n        \"batteryCapacity\": 79,\n        \"state\": \"LOADING\",\n        \"fleetId\": 66\n    },\n    {\n        \"serialNo\": \"abc-102\",\n        \"model\": \"MW\",\n        \"weight\": 100,\n        \"batteryCapacity\": 49,\n        \"state\": \"IDLE\",\n        \"fleetId\": 66\n    }\n]"
+				}
+			]
+		},
+		{
+			"name": "Get the battery capacity of drone",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/drone-service/drone/get/batteryLevel?serialNo=abc-100",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"drone-service",
+						"drone",
+						"get",
+						"batteryLevel"
+					],
+					"query": [
+						{
+							"key": "serialNo",
+							"value": "abc-100"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Success",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/drone-service/drone/get/batteryLevel?serialNo=abc-100",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"drone-service",
+								"drone",
+								"get",
+								"batteryLevel"
+							],
+							"query": [
+								{
+									"key": "serialNo",
+									"value": "abc-100"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "plain",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain;charset=UTF-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "3"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 28 Aug 2022 19:44:36 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "68%"
+				},
+				{
+					"name": "Unsuccess",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/drone-service/drone/get/batteryLevel?serialNo=abc-1000",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"drone-service",
+								"drone",
+								"get",
+								"batteryLevel"
+							],
+							"query": [
+								{
+									"key": "serialNo",
+									"value": "abc-1000"
+								}
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "plain",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain;charset=UTF-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "28"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 28 Aug 2022 20:11:32 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "Invalid drone serial number!"
+				}
+			]
+		},
+		{
+			"name": "Get loaded medications of drone",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/drone-service/medication/getAll?serialNo=abc-101",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"drone-service",
+						"medication",
+						"getAll"
+					],
+					"query": [
+						{
+							"key": "serialNo",
+							"value": "abc-101"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Success",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/drone-service/medication/getAll?serialNo=abc-101",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"drone-service",
+								"medication",
+								"getAll"
+							],
+							"query": [
+								{
+									"key": "serialNo",
+									"value": "abc-101"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 28 Aug 2022 20:31:18 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"name\": \"med-6\",\n        \"weight\": 200,\n        \"code\": \"CODE_6\",\n        \"imagePath\": \"/path/image1.jpg\"\n    },\n    {\n        \"name\": \"med-7\",\n        \"weight\": 30,\n        \"code\": \"CODE_7\",\n        \"imagePath\": \"/src/img/image2.png\"\n    },\n    {\n        \"name\": \"med-8\",\n        \"weight\": 50,\n        \"code\": \"CODE_8\",\n        \"imagePath\": \"/path/image3.png\"\n    }\n]"
+				}
+			]
+		},
+		{
+			"name": "Update drone state",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/drone-service/drone/update/state?serialNo=abc-100",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"drone-service",
+						"drone",
+						"update",
+						"state"
+					],
+					"query": [
+						{
+							"key": "serialNo",
+							"value": "abc-100"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Success",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/drone-service/drone/update/state?serialNo=abc-100",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"drone-service",
+								"drone",
+								"update",
+								"state"
+							],
+							"query": [
+								{
+									"key": "serialNo",
+									"value": "abc-100"
+								}
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "plain",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain;charset=UTF-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "50"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 28 Aug 2022 19:43:52 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "Drone state is successfully updated into RETURNING"
+				},
+				{
+					"name": "Unsuccess",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/drone-service/drone/update/state?serialNo=abc-102",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"drone-service",
+								"drone",
+								"update",
+								"state"
+							],
+							"query": [
+								{
+									"key": "serialNo",
+									"value": "abc-102"
+								}
+							]
+						}
+					},
+					"status": "Expectation Failed",
+					"code": 417,
+					"_postman_previewlanguage": "plain",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "text/plain;charset=UTF-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "101"
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 28 Aug 2022 20:16:53 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "Invalid drone serial number or drone state is IDLE! If IDLE please start the loading process and try!"
+				}
+			]
+		}
+	]
+}
