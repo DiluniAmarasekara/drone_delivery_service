@@ -35,6 +35,4 @@ public class Fleet extends BaseEntity {
         this.fleetName = fleetName;
         this.noOfDrones = noOfDrones;
     }
-
-    //    other relevant attributes
 }

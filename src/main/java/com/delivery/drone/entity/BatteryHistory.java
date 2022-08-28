@@ -28,5 +28,4 @@ public class BatteryHistory extends BaseEntity {
         this.batteryCapacity = batteryCapacity;
         this.drone = drone;
     }
-
 }

@@ -37,5 +37,4 @@ public class Medication extends BaseEntity {
         this.imagePath = imagePath;
         this.drone = drone;
     }
-
 }

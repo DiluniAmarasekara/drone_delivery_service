@@ -5,7 +5,6 @@ import lombok.Data;
 
 import javax.persistence.*;
 
-
 /**
  * created by Diluni
  * on 8/26/2022
@@ -58,5 +57,4 @@ public class Drone extends BaseEntity {
             this.state = EnumUtil.State.LOADED;
         }
     }
-
 }
