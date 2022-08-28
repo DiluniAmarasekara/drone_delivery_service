@@ -8,7 +8,7 @@ _Medications delivery service via drones_
 - Postgres 14
 
 ## Solution
-![ER diagram](img/ER_diagram.png)
+![ER diagram](img/ERdiagram.png)
 
 ## Features
 - Add a fleet
