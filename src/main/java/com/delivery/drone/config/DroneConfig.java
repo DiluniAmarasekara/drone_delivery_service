@@ -105,5 +105,4 @@ public class DroneConfig {
         }
         logger.info("Not Available Drone State Update scheduler exit at " + new Date());
     }
-
 }
