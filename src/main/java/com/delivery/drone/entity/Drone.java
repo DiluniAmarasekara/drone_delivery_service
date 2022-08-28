@@ -34,15 +34,6 @@ public class Drone extends BaseEntity {
     public Drone() {
     }
 
-    public Drone(String serialNo, EnumUtil.Model model, Double weightLimit, Double availableWeight, Integer batteryCapacity, Fleet fleet) {
-        this.serialNo = serialNo;
-        this.model = model;
-        this.weightLimit = weightLimit;
-        this.availableWeight = availableWeight;
-        this.batteryCapacity = batteryCapacity;
-        this.fleet = fleet;
-    }
-
     public Drone(String serialNo, EnumUtil.Model model, Double weightLimit, Double availableWeight, Integer batteryCapacity, EnumUtil.State state, Fleet fleet) {
         this.serialNo = serialNo;
         this.model = model;

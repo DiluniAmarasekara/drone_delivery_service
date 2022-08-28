@@ -44,9 +44,9 @@ class DroneConfigTest {
     void setUp() {
         Optional<Fleet> fleet1 = Optional.of(new Fleet(1L, "fleet-1", 8));
 
-        Optional<Drone> drone1 = Optional.of(new Drone("DC-13245", EnumUtil.Model.CW, 300.0, 20.0, 46, fleet1.get()));
-        Optional<Drone> drone2 = Optional.of(new Drone("DC-13246", EnumUtil.Model.MW, 450.0, 450.0, 20, fleet1.get()));
-        Optional<Drone> drone3 = Optional.of(new Drone("DC-13247", EnumUtil.Model.HW, 200.0, 0.0, 46, fleet1.get()));
+        Optional<Drone> drone1 = Optional.of(new Drone("DC-13245", EnumUtil.Model.CW, 300.0, 20.0, 46, EnumUtil.State.IDLE, fleet1.get()));
+        Optional<Drone> drone2 = Optional.of(new Drone("DC-13246", EnumUtil.Model.MW, 450.0, 450.0, 20, EnumUtil.State.IDLE, fleet1.get()));
+        Optional<Drone> drone3 = Optional.of(new Drone("DC-13247", EnumUtil.Model.HW, 200.0, 0.0, 46, EnumUtil.State.IDLE, fleet1.get()));
 
         drones = List.of(drone1.get(), drone2.get(), drone3.get());
         when(droneRepository.findAll()).thenReturn(drones);
@@ -116,37 +116,6 @@ class DroneConfigTest {
             droneConfig.batteryPercentageUpdate();
         });
         assertEquals("Exception is occurred while running the Battery Percentage Update scheduler", exception.getMessage());
-    }
-
-    /**
-     * Success scenario of not available drone's state update
-     */
-    @Test
-    void notAvailableDroneStateUpdate(CapturedOutput output) {
-        droneConfig.notAvailableDroneStateUpdate();
-        Assertions.assertTrue(output.getOut().contains("Not Available Drone State Update scheduler is finished at"));
-    }
-
-    /**
-     * Drones null scenario of not available drone's state update
-     */
-    @Test
-    void notAvailableDroneStateUpdateNullDrones(CapturedOutput output) {
-        when(droneRepository.findByStateNotIn(any())).thenReturn(null);
-        droneConfig.notAvailableDroneStateUpdate();
-        Assertions.assertTrue(output.getOut().contains("No non-available drones to update the state!"));
-    }
-
-    /**
-     * Exception scenario of not available drone's state update
-     */
-    @Test
-    void notAvailableDroneStateUpdateException() {
-        when(droneRepository.saveAll(any())).thenThrow(new RuntimeException());
-        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
-            droneConfig.notAvailableDroneStateUpdate();
-        });
-        assertEquals("Exception is occurred while running the Not Available Drones State Update scheduler", exception.getMessage());
     }
 
 }

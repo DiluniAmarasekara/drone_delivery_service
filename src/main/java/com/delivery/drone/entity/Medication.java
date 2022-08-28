@@ -40,4 +40,14 @@ public class Medication extends BaseEntity {
         this.drone = drone;
     }
 
+    public Medication(Long medId, String name, Double weight, String code, String imagePath, Boolean isDelivered, Drone drone) {
+        this.medId = medId;
+        this.name = name;
+        this.weight = weight;
+        this.code = code;
+        this.imagePath = imagePath;
+        this.isDelivered = isDelivered;
+        this.drone = drone;
+    }
+
 }
