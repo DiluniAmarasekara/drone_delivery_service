@@ -3,15 +3,16 @@ package com.delivery.drone.controller;
 import com.delivery.drone.dto.CreateDroneDto;
 import com.delivery.drone.dto.DroneDto;
 import com.delivery.drone.dto.MedicationDto;
+import com.delivery.drone.dto.ValidList;
 import com.delivery.drone.service.DroneService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -33,7 +34,7 @@ public class DroneController {
      * @return ResponseEntity
      */
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public ResponseEntity<String> add(@Validated @RequestBody(required = true) CreateDroneDto createDroneDto) {
+    public ResponseEntity<String> add(@Valid @RequestBody(required = true) CreateDroneDto createDroneDto) {
         logger.info("Enter the drone add POST REST API");
         Boolean isSuccess = droneService.add(createDroneDto);
         return isSuccess ? new ResponseEntity<>("Drone has been registered successfully!", HttpStatus.CREATED) : new ResponseEntity<>("Drone registration is failed!", HttpStatus.EXPECTATION_FAILED);
@@ -47,9 +48,9 @@ public class DroneController {
      * @return ResponseEntity
      */
     @RequestMapping(value = "/load", method = RequestMethod.POST)
-    public ResponseEntity<String> load(@Validated @RequestBody(required = true) List<MedicationDto> medicationDtos, @RequestParam(required = true) String serialNo) {
+    public ResponseEntity<String> load(@Valid @RequestBody(required = true) ValidList<MedicationDto> medicationDtos, @RequestParam(required = true) String serialNo) {
         logger.info("Enter the drone load POST REST API");
-        Boolean isSuccess = droneService.load(serialNo, medicationDtos);
+        Boolean isSuccess = droneService.load(serialNo, medicationDtos.getList());
         return isSuccess ? new ResponseEntity<>("Drone loading is successful!", HttpStatus.CREATED) : new ResponseEntity<>("Drone loading is failed!", HttpStatus.EXPECTATION_FAILED);
     }
 

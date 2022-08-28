@@ -50,7 +50,7 @@ public class DroneServiceImpl implements DroneService {
         Optional<Fleet> fleet = fleetRepository.findById(droneDto.getFleetId());
         if (fleet.isPresent() && fleet.get().getNoOfDrones() < 10) {
             try {
-                Drone drone = new Drone(droneDto.getSerialNo(), EnumUtil.Model.valueOf(droneDto.getModel()), Double.parseDouble(String.valueOf(droneDto.getAvailableWeight())),
+                Drone drone = new Drone(droneDto.getSerialNo(), EnumUtil.Model.valueOf(droneDto.getModel().toUpperCase()), Double.parseDouble(String.valueOf(droneDto.getAvailableWeight())),
                         Double.parseDouble(String.valueOf(droneDto.getAvailableWeight())), droneDto.getBatteryCapacity(), fleet.get());
                 droneRepository.save(drone);
                 fleet.get().setNoOfDrones(fleet.get().getNoOfDrones() + 1);
