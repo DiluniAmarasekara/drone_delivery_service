@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.constraints.Size;
 import java.util.List;
 
 /**
@@ -31,7 +32,7 @@ public class MedicationController {
      * @return List<MedicationDto>
      */
     @RequestMapping(value = "/getAll", method = RequestMethod.GET)
-    public List<MedicationDto> getAll(@RequestParam(required = true) String serialNo) {
+    public List<MedicationDto> getAll(@RequestParam @Size(max = 100, message = "Serial Number should be max 100 characters!") String serialNo) {
         logger.info("Enter the get all GET REST API");
         return medicationService.getAll(serialNo);
     }

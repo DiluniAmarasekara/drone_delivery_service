@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Size;
 import java.util.List;
 import java.util.Map;
 
@@ -49,7 +50,7 @@ public class DroneController {
      * @return ResponseEntity
      */
     @RequestMapping(value = "/load", method = RequestMethod.POST)
-    public ResponseEntity<String> load(@Valid @RequestBody(required = true) ValidList<MedicationDto> medicationDtos, @RequestParam(required = true) String serialNo) {
+    public ResponseEntity<String> load(@Valid @RequestBody ValidList<MedicationDto> medicationDtos, @RequestParam @Size(max = 100, message = "Serial Number should be max 100 characters!") String serialNo) {
         logger.info("Enter the drone load POST REST API");
         Map<Boolean, String> output = droneService.load(serialNo, medicationDtos.getList());
         return output.containsKey(true) ? new ResponseEntity<>(output.get(true), HttpStatus.CREATED) : new ResponseEntity<>(output.get(false), HttpStatus.EXPECTATION_FAILED);
@@ -73,7 +74,7 @@ public class DroneController {
      * @return ResponseEntity
      */
     @RequestMapping(value = "/get/batteryLevel", method = RequestMethod.GET)
-    public ResponseEntity<String> getBatteryLevel(@RequestParam(required = true) String serialNo) {
+    public ResponseEntity<String> getBatteryLevel(@RequestParam @Size(max = 100, message = "Serial Number should be max 100 characters!") String serialNo) {
         logger.info("Enter the drone get battery level GET REST API");
         Map<Boolean, String> output = droneService.getBatteryLevel(serialNo);
         return output.containsKey(true) ? new ResponseEntity<>(output.get(true), HttpStatus.OK) : new ResponseEntity<>(output.get(false), HttpStatus.NOT_FOUND);
@@ -86,7 +87,7 @@ public class DroneController {
      * @return
      */
     @RequestMapping(value = "/update/state", method = RequestMethod.PUT)
-    public ResponseEntity<String> updateState(@RequestParam(required = true) String serialNo) {
+    public ResponseEntity<String> updateState(@RequestParam @Size(max = 100, message = "Serial Number should be max 100 characters!") String serialNo) {
         logger.info("Enter the update state POST REST API");
         Map<Boolean, String> output = droneService.updateState(serialNo);
         return output.containsKey(true) ? new ResponseEntity<>(output.get(true), HttpStatus.CREATED) : new ResponseEntity<>(output.get(false), HttpStatus.EXPECTATION_FAILED);

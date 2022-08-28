@@ -22,6 +22,8 @@ public class MedicationDto {
     @Pattern(regexp = "^[A-Z_0-9]*$", message = "Invalid medication code! This allows only upper case letters, underscore and numbers")
     private String code;
 
+//    /site/images/test.png
+    @Pattern(regexp = "(\\/.*?\\.\\w{3})", message = "Invalid image path!")
     private String imagePath;
 
     public MedicationDto() {

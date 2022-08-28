@@ -7,7 +7,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,7 +15,7 @@ import java.util.List;
  * created by Diluni
  * on 8/27/2022
  */
-@Controller
+@RestController
 @RequestMapping("fleet")
 public class FleetController {
     Logger logger = LoggerFactory.getLogger(FleetController.class);
